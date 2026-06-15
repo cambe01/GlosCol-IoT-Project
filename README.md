@@ -51,12 +51,5 @@ Completion times are saved automatically when the box opens. The leaderboard scr
 3. Team Sudo       —  4:02
 ...
 ```
-
-Reset between events with:
-
-```bash
-python leaderboard/leaderboard.py --reset
-```
-
 ---
 
