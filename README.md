@@ -11,7 +11,7 @@ The Hackbox is a locked wooden or plastic box with a screen, some LEDs, and a se
 
 **"This box contains a prize / secret message / trophy. Can you hack your way in?"**
 
-Visitors work through **three sequential puzzle stages**. Solving each one triggers a satisfying LED flash and unlocks the next. Complete all three and a physical latch releases — the box clicks open. Your time is logged on a leaderboard.
+Visitors work through **three sequential puzzle stages**. Solving each one triggers a satisfying LED flash and unlocks the next. Complete all three and a physical latch releases and the box clicks open. Your time is logged on a leaderboard.
 
 Designed for solo players or pairs. No experience required, but a curious mind helps.
 
