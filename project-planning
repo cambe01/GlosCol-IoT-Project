@@ -1,0 +1,56 @@
+🔐 The Hackbox — In Depth
+The Visitor Experience
+A visitor walks up to a locked wooden or plastic box. A screen (or printed card) tells them: "This box contains a prize / secret message / trophy. Can you hack your way in?"
+They work through 3 stages in sequence. Each stage is a short puzzle. Solving it correctly triggers a satisfying LED flash and unlocks the next stage. Completing all three releases a physical latch (controlled by the Pi via a relay), and the box clicks open. Their completion time is logged on a leaderboard.
+It can be played solo or as a pair — ideal for a festival setting.
+
+The Three Puzzle Stages
+Stage 1 — Spot the Phishing Email
+
+A tablet or small screen shows two side-by-side emails. One is legitimate, one is a phishing attempt (dodgy sender address, fake urgency, suspicious link). The visitor presses a Red or Green button on the breadboard to choose. Get it right → green LED pulse, move on. Get it wrong → red flash, try again (with a time penalty).
+Stage 2 — Caesar Cipher Decoder
+
+A short encrypted message is displayed (e.g. KHOOR ZRUOG = HELLO WORLD with a shift of 3). A rotary encoder or number buttons let the visitor try different shift values. When they land on the correct plaintext, they confirm with a button press. This stage teaches the most basic form of encryption in a hands-on way.
+Stage 3 — Password Strength Puzzle
+
+Four passwords are shown on screen. The visitor must rank them from weakest to strongest using numbered buttons. The "correct" order is based on real password security rules (length, symbols, no dictionary words). This is the most thought-provoking stage and sparks genuine conversation.
+
+Hardware Needed
+ComponentPurposeRaspberry Pi 4Central controller — runs all logicSmall touchscreen or HDMI monitorDisplaying puzzles and feedbackBreadboard + jumper wiresConnecting all componentsColoured LEDs (red, green, amber)Visual feedback per stagePush buttons (×4–6)User input for puzzlesRotary encoderCipher-cracking dial (Stage 2)5V relay modulePhysically controlling the lockElectric cabinet latch / solenoid lockThe thing that actually opens the boxResistorsProtecting LEDs and GPIO pinsPower supplyPi + relay + lock all need stable powerOptional: Pi CameraPhoto of the winner when box opens
+
+
+Software Architecture 
+
+┌─────────────────────────────┐
+│        Raspberry Pi         │
+│                             │
+│  game_controller.py         │  ← main loop, tracks stage + timer
+│  puzzles/                   │
+│    phishing.py              │  ← Stage 1 logic
+│    caesar.py                │  ← Stage 2 logic
+│    password.py              │  ← Stage 3 logic
+│  hardware/                  │
+│    gpio_handler.py          │  ← button input, LED output
+│    relay.py                 │  ← lock control
+│  leaderboard/               │
+│    submit_score.py          │  ← sends time to server via HTTP
+└─────────────────────────────┘
+          │
+          ▼ HTTP POST
+┌─────────────────────────────┐
+│     Server (Flask / Pi)     │
+│  leaderboard_api.py         │  ← receives and stores scores
+│  leaderboard.html           │  ← live display for nearby screen
+└─────────────────────────────┘
+
+The main loop is straightforward: track which stage the player is on, listen for GPIO button presses, validate the answer, give feedback via LEDs, and advance or penalise accordingly. On completion, fire the relay and POST the time to the server.
+
+How Data Flows
+
+Visitor starts → Pi records a start timestamp
+Each correct answer → Pi logs the stage completion time
+Box opens → Pi calculates total time, optionally adds a name/initials via buttons or touchscreen
+Score is POSTed to a Flask server running on a second Pi or laptop on the local network
+The leaderboard page auto-refreshes every few seconds and displays on a second screen nearby
+All scores are written to a SQLite database or CSV — you have a full dataset of attempts at the end of the day
+
