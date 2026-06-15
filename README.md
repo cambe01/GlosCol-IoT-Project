@@ -1,7 +1,7 @@
 # GlosCol-IoT-Project
 # 🔐 The Hackbox
 
-> *A physical puzzle box that challenges visitors to "hack" their way in through a series of logic and code challenges — built for festivals, maker fairs, and tech events.*
+> *A physical puzzle box that challenges visitors to "hack" their way in through a series of logic and code challenges built for festivals, maker fairs, and tech events.*
 
 ---
 
